@@ -9,35 +9,6 @@ import os
 import numpy
 import pickle
 from enhance import image_enhance
-from skimage.morphology import skeletonize
-
-
-def removedot(invertThin):
-    temp0 = numpy.array(invertThin[:])
-    temp0 = numpy.array(temp0)
-    temp1 = temp0 / 255
-    temp2 = numpy.array(temp1)
-
-    W, H = temp0.shape[:2]
-    filtersize = 6
-
-    for i in range(W - filtersize):
-        for j in range(H - filtersize):
-            filter0 = temp1[i:i + filtersize, j:j + filtersize]
-
-            flag = 0
-            if sum(filter0[:, 0]) == 0:
-                flag += 1
-            if sum(filter0[:, filtersize - 1]) == 0:
-                flag += 1
-            if sum(filter0[0, :]) == 0:
-                flag += 1
-            if sum(filter0[filtersize - 1, :]) == 0:
-                flag += 1
-            if flag > 3:
-                temp2[i:i + filtersize, j:j + filtersize] = numpy.zeros((filtersize, filtersize))
-
-    return temp2
 
 
 def get_descriptors(img):
@@ -51,10 +22,6 @@ def get_descriptors(img):
 
     # Normalize to 0 and 1 range
     img[img == 255] = 1
-
-    # Thinning
-    skeleton = skeletonize(img)
-    skeleton = numpy.array(skeleton, dtype=numpy.uint8)
 
     # Harris corners
     harris_corners = cv2.cornerHarris(img, 3, 3, 0.04)
@@ -104,12 +71,12 @@ def run_app(image_path, data_path):
     img1 = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
     if img1 is not None:
-        img1 = cv2.resize(img1, dsize=(245, 372))
+        img1 = cv2.resize(img1, dsize=(256, 364))
         kp1, des1 = get_descriptors(img1)
     else:
         raise Exception("Invalid image path!")
 
-    address_lst = os.listdir(data_path)
+    address_lst = [name for name in os.listdir(data_path) if os.path.isfile(os.path.join(data_path, name))]
     name_lst = list(address_lst)
     avgs = match(des1, data_path, name_lst)
 

@@ -317,6 +317,7 @@ class ProjectWindow(tk.Frame):
         name = fd.askopenfilename(initialdir="./image/",
                                   title="Select image file",
                                   filetypes=[
+                                      ("All files", ".*"),
                                       ("TIFF files", ".tiff .tif"),
                                       ("Windows bitmaps", ".bmp .dib"),
                                       ("JPEG files", ".jpeg .jpg .jpe"),
@@ -327,15 +328,14 @@ class ProjectWindow(tk.Frame):
                                       ("PFM files", ".pfm"),
                                       ("Sun rasters", ".sr .ras"),
                                       ("OpenEXR Image files", ".exr"),
-                                      ("Radiance HDR", ".hdr .pic"),
-                                      ("All files", ".*")
+                                      ("Radiance HDR", ".hdr .pic")
                                   ])
-        self.imgPath.set(name)
+        self.imgPath.set(os.path.relpath(name))
 
     def browseDataPath(self):
         name = fd.askdirectory(initialdir="./data/",
                                title="Select data folder",)
-        self.dataPath.set(name)
+        self.dataPath.set(os.path.relpath(name))
 
     def help(self):
         self.help = None
