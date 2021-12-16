@@ -32,8 +32,6 @@ LIB_NAME = 3
 DEFINES = 0
 INITIALISERS = 1
 
-configuration_dictionary = list(dict())
-
 
 class Parameters:
     def __init__(self, _img, _data, gui):
@@ -43,35 +41,55 @@ class Parameters:
 
 
 def GetBackground():
-    return 'white'
+    return "white"
 
 
 def GetButtonBackground():
-    return 'white'
+    return "white"
 
 
 def GetTextColour():
-    return 'black'
+    return "black"
 
 
 def GetButtonTextColour():
-    return '#c51a4a'
+    return "#c51a4a"
 
 
 def RunGUI(_args):
     root = tk.Tk()
     style = ttk.Style(root)
-    style.theme_use('default')
+    style.theme_use("default")
 
-    ttk.Style().configure("TButton", padding=6, relief="groove", border=2, foreground=GetButtonTextColour(),
-                          background=GetButtonBackground())
-    ttk.Style().configure("TLabel", foreground=GetTextColour(), background=GetBackground())
-    ttk.Style().configure("TCheckbutton", foreground=GetTextColour(), background=GetBackground())
-    ttk.Style().configure("TRadiobutton", foreground=GetTextColour(), background=GetBackground())
-    ttk.Style().configure("TLabelframe", foreground=GetTextColour(), background=GetBackground())
-    ttk.Style().configure("TLabelframe.Label", foreground=GetTextColour(), background=GetBackground())
-    ttk.Style().configure("TCombobox", foreground=GetTextColour(), background=GetBackground())
-    ttk.Style().configure("TListbox", foreground=GetTextColour(), background=GetBackground())
+    ttk.Style().configure(
+        "TButton",
+        padding=6,
+        relief="groove",
+        border=2,
+        foreground=GetButtonTextColour(),
+        background=GetButtonBackground(),
+    )
+    ttk.Style().configure(
+        "TLabel", foreground=GetTextColour(), background=GetBackground()
+    )
+    ttk.Style().configure(
+        "TCheckbutton", foreground=GetTextColour(), background=GetBackground()
+    )
+    ttk.Style().configure(
+        "TRadiobutton", foreground=GetTextColour(), background=GetBackground()
+    )
+    ttk.Style().configure(
+        "TLabelframe", foreground=GetTextColour(), background=GetBackground()
+    )
+    ttk.Style().configure(
+        "TLabelframe.Label", foreground=GetTextColour(), background=GetBackground()
+    )
+    ttk.Style().configure(
+        "TCombobox", foreground=GetTextColour(), background=GetBackground()
+    )
+    ttk.Style().configure(
+        "TListbox", foreground=GetTextColour(), background=GetBackground()
+    )
 
     app = ProjectWindow(root, _args)
 
@@ -82,12 +100,12 @@ def RunGUI(_args):
 
 
 def RunWarning(message):
-    mb.showwarning('Fingerprint Recognization', message)
+    mb.showwarning("Fingerprint Recognization", message)
     sys.exit(0)
 
 
 def ShowResult(message):
-    mb.showinfo('Fingerprint Recognization', message)
+    mb.showinfo("Fingerprint Recognization", message)
 
 
 class ChecklistBox(tk.Frame):
@@ -99,11 +117,11 @@ class ChecklistBox(tk.Frame):
             # This var will be automatically updated by the checkbox
             # The checkbox fills the var with the "onvalue" and "offvalue" as
             # it is clicked on and off
-            var = tk.StringVar(value='')  # Off by default for the moment
+            var = tk.StringVar(value="")  # Off by default for the moment
             self.vars.append(var)
-            cb = ttk.Checkbutton(self, var=var, text=c,
-                                 onvalue=c, offvalue="",
-                                 width=20)
+            cb = ttk.Checkbutton(
+                self, var=var, text=c, onvalue=c, offvalue="", width=20
+            )
             cb.pack(side="top", fill="x", anchor="w")
 
     def getCheckedItems(self):
@@ -118,7 +136,7 @@ class ChecklistBox(tk.Frame):
 def thread_function(text, command, ok):
     l = shlex.split(command)
     proc = subprocess.Popen(l, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    for line in iter(proc.stdout.readline, ''):
+    for line in iter(proc.stdout.readline, ""):
         if not line:
             if ok:
                 ok["state"] = tk.NORMAL
@@ -143,7 +161,7 @@ class DisplayWindow(tk.Toplevel):
         frame.pack(fill=tk.X, expand=True, side=tk.TOP)
 
         scrollbar = tk.Scrollbar(frame)
-        self.text = tk.Text(frame, bg='gray14', fg='gray99')
+        self.text = tk.Text(frame, bg="gray14", fg="gray99")
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.text.pack(side=tk.LEFT, fill=tk.Y)
         scrollbar.config(command=self.text.yview)
@@ -171,7 +189,6 @@ def RunCommandInWindow(parent, command):
 
 
 class EditBoolWindow(sd.Dialog):
-
     def __init__(self, parent, configitem, current):
         self.parent = parent
         self.config_item = configitem
@@ -180,19 +197,24 @@ class EditBoolWindow(sd.Dialog):
 
     def body(self, master):
         self.configure(background=GetBackground())
-        ttk.Label(self, text=self.config_item['name']).pack()
+        ttk.Label(self, text=self.config_item["name"]).pack()
         self.result = tk.StringVar()
         self.result.set(self.current)
-        ttk.Radiobutton(master, text="True", variable=self.result, value="True").pack(anchor=tk.W)
-        ttk.Radiobutton(master, text="False", variable=self.result, value="False").pack(anchor=tk.W)
-        ttk.Radiobutton(master, text=CONFIG_UNSET, variable=self.result, value=CONFIG_UNSET).pack(anchor=tk.W)
+        ttk.Radiobutton(master, text="True", variable=self.result, value="True").pack(
+            anchor=tk.W
+        )
+        ttk.Radiobutton(master, text="False", variable=self.result, value="False").pack(
+            anchor=tk.W
+        )
+        ttk.Radiobutton(
+            master, text=CONFIG_UNSET, variable=self.result, value=CONFIG_UNSET
+        ).pack(anchor=tk.W)
 
     def get(self):
         return self.result.get()
 
 
 class EditIntWindow(sd.Dialog):
-
     def __init__(self, parent, configitem, current):
         self.parent = parent
         self.config_item = configitem
@@ -202,7 +224,13 @@ class EditIntWindow(sd.Dialog):
 
     def body(self, master):
         self.configure(background=GetBackground())
-        _str = self.config_item['name'] + "  Max = " + self.config_item['max'] + "  Min = " + self.config_item['min']
+        _str = (
+            self.config_item["name"]
+            + "  Max = "
+            + self.config_item["max"]
+            + "  Min = "
+            + self.config_item["min"]
+        )
         ttk.Label(self, text=_str).pack()
         self.input = tk.Entry(self)
         self.input.pack(pady=4)
@@ -232,9 +260,9 @@ class EditEnumWindow(sd.Dialog):
 
     def body(self, master):
         # self.configure(background=GetBackground())
-        values = self.config_item['enumvalues'].split('|')
-        values.insert(0, 'Not set')
-        self.input = ttk.Combobox(self, values=values, state='readonly')
+        values = self.config_item["enumvalues"].split("|")
+        values.insert(0, "Not set")
+        self.input = ttk.Combobox(self, values=values, state="readonly")
         self.input.set(self.current)
         self.input.pack(pady=12)
 
@@ -252,7 +280,6 @@ def _get_filepath(filename):
 
 # Our main window
 class ProjectWindow(tk.Frame):
-
     def __init__(self, parent, _args):
         tk.Frame.__init__(self, parent)
         self.master = parent
@@ -265,40 +292,57 @@ class ProjectWindow(tk.Frame):
     def init_window(self):
         self.master.title("Fingerprint Recognization")
         self.master.configure(bg=GetBackground())
-        mainFrame = tk.Frame(self, bg=GetBackground()).grid(row=0, column=0, columnspan=6, rowspan=12)
+        mainFrame = tk.Frame(self, bg=GetBackground()).grid(
+            row=0, column=0, columnspan=6, rowspan=12
+        )
 
         # Need to keep a reference to the image or it will not appear.
         self.logo = tk.PhotoImage(file=_get_filepath("logo.png"))
-        logowidget = ttk.Label(mainFrame, image=self.logo, borderwidth=0, relief="solid").grid(row=0, column=0,
-                                                                                               columnspan=5, pady=10)
+        logowidget = ttk.Label(
+            mainFrame, image=self.logo, borderwidth=0, relief="solid"
+        ).grid(row=0, column=0, columnspan=5, pady=10)
 
         # Set image path
-        imglbl = ttk.Label(mainFrame, text='Image path:').grid(row=2, column=0, sticky=tk.E)
+        imglbl = ttk.Label(mainFrame, text="Image path:").grid(
+            row=2, column=0, sticky=tk.E
+        )
         self.imgPath = tk.StringVar()
         self.imgPath.set(os.getcwd())
-        imgEntry = ttk.Entry(mainFrame, textvariable=self.imgPath).grid(row=2, column=1, columnspan=3,
-                                                                        sticky=tk.W + tk.E, padx=5)
-        imgBrowse = ttk.Button(mainFrame, text='Browse', command=self.browseImgPath).grid(row=2, column=4)
+        imgEntry = ttk.Entry(mainFrame, textvariable=self.imgPath).grid(
+            row=2, column=1, columnspan=3, sticky=tk.W + tk.E, padx=5
+        )
+        imgBrowse = ttk.Button(
+            mainFrame, text="Browse", command=self.browseImgPath
+        ).grid(row=2, column=4)
 
         # Set data path
-        datalbl = ttk.Label(mainFrame, text='Data path:').grid(row=3, column=0, sticky=tk.E)
+        datalbl = ttk.Label(mainFrame, text="Data path:").grid(
+            row=3, column=0, sticky=tk.E
+        )
         self.dataPath = tk.StringVar()
         self.dataPath.set(os.getcwd())
-        dataEntry = ttk.Entry(mainFrame, textvariable=self.dataPath).grid(row=3, column=1, columnspan=3,
-                                                                          sticky=tk.W + tk.E, padx=5)
-        dataBrowse = ttk.Button(mainFrame, text='Browse', command=self.browseDataPath).grid(row=3, column=4)
+        dataEntry = ttk.Entry(mainFrame, textvariable=self.dataPath).grid(
+            row=3, column=1, columnspan=3, sticky=tk.W + tk.E, padx=5
+        )
+        dataBrowse = ttk.Button(
+            mainFrame, text="Browse", command=self.browseDataPath
+        ).grid(row=3, column=4)
 
         # OK, Cancel, Help section
         # creating buttons
-        QuitButton = ttk.Button(mainFrame, text="Quit", command=self.quit).grid(row=5, column=4)
-        OKButton = ttk.Button(mainFrame, text="OK", command=self.OK).grid(row=5, column=3)
+        QuitButton = ttk.Button(mainFrame, text="Quit", command=self.quit).grid(
+            row=5, column=4
+        )
+        OKButton = ttk.Button(mainFrame, text="OK", command=self.OK).grid(
+            row=5, column=3
+        )
 
         # TODO help not implemented yet
         # HelpButton = ttk.Button(mainFrame, text="Help", command=self.help).grid(row=5, column=0, pady=5)
 
         # You can set a default path here, replace the string with whereever you want.
-        self.imgPath.set('./image/101_1.tif')
-        self.dataPath.set('./data/')
+        self.imgPath.set("./image/101_1.tif")
+        self.dataPath.set("./data/")
 
     def quit(self):
         # TODO Check if we want to exit here
@@ -314,27 +358,31 @@ class ProjectWindow(tk.Frame):
         DoEverything(self, p)
 
     def browseImgPath(self):
-        name = fd.askopenfilename(initialdir="./image/",
-                                  title="Select image file",
-                                  filetypes=[
-                                      ("All files", ".*"),
-                                      ("TIFF files", ".tiff .tif"),
-                                      ("Windows bitmaps", ".bmp .dib"),
-                                      ("JPEG files", ".jpeg .jpg .jpe"),
-                                      ("JPEG 2000 files", ".jp2"),
-                                      ("Portable Network Graphics", ".png"),
-                                      ("WebP", ".webp"),
-                                      ("Portable image format", ".pbm .pgm .ppm .pxm .pnm"),
-                                      ("PFM files", ".pfm"),
-                                      ("Sun rasters", ".sr .ras"),
-                                      ("OpenEXR Image files", ".exr"),
-                                      ("Radiance HDR", ".hdr .pic")
-                                  ])
+        name = fd.askopenfilename(
+            initialdir="./image/",
+            title="Select image file",
+            filetypes=[
+                ("All files", ".*"),
+                ("TIFF files", ".tiff .tif"),
+                ("Windows bitmaps", ".bmp .dib"),
+                ("JPEG files", ".jpeg .jpg .jpe"),
+                ("JPEG 2000 files", ".jp2"),
+                ("Portable Network Graphics", ".png"),
+                ("WebP", ".webp"),
+                ("Portable image format", ".pbm .pgm .ppm .pxm .pnm"),
+                ("PFM files", ".pfm"),
+                ("Sun rasters", ".sr .ras"),
+                ("OpenEXR Image files", ".exr"),
+                ("Radiance HDR", ".hdr .pic"),
+            ],
+        )
         self.imgPath.set(os.path.relpath(name))
 
     def browseDataPath(self):
-        name = fd.askdirectory(initialdir="./data/",
-                               title="Select data folder",)
+        name = fd.askdirectory(
+            initialdir="./data/",
+            title="Select data folder",
+        )
         self.dataPath.set(os.path.relpath(name))
 
     def help(self):
@@ -346,13 +394,13 @@ def CheckImgPath(gui, _img):
     _imgPath = os.path.exists(Path(_img))
 
     if _imgPath is None:
-        m = 'Unable to locate the image file.'
+        m = "Unable to locate the image file."
         if gui:
             RunWarning(m)
         else:
             print(m)
     elif not os.path.isfile(Path(_img)):
-        m = 'Unable to locate the image file, --image does not point to a file.'
+        m = "Unable to locate the image file, --image does not point to a file."
         if gui:
             RunWarning(m)
         else:
@@ -366,13 +414,13 @@ def CheckDataPath(gui, _data):
     _dataPath = os.path.exists(Path(_data))
 
     if _dataPath is None:
-        m = 'Unable to locate the data folder.'
+        m = "Unable to locate the data folder."
         if gui:
             RunWarning(m)
         else:
             print(m)
     elif not os.path.isdir(Path(_data)):
-        m = 'Unable to locate the data folder, --data does not point to a folder.'
+        m = "Unable to locate the data folder, --data does not point to a folder."
         if gui:
             RunWarning(m)
         else:
@@ -383,10 +431,17 @@ def CheckDataPath(gui, _data):
 
 
 def ParseCommandLine():
-    parser = argparse.ArgumentParser(description='Fingerprint Recognization')
-    parser.add_argument("-d", "--data", help="Select an alternative data folder", default="./data/")
+    parser = argparse.ArgumentParser(description="Fingerprint Recognization")
+    parser.add_argument(
+        "-d", "--data", help="Select an alternative data folder", default="./data/"
+    )
     parser.add_argument("-i", "--image", help="Select a fingerprint image to recognize")
-    parser.add_argument("-g", "--gui", action='store_true', help="Run a GUI version of the fingerprint recognization")
+    parser.add_argument(
+        "-g",
+        "--gui",
+        action="store_true",
+        help="Run a GUI version of the fingerprint recognization",
+    )
 
     return parser.parse_args()
 
@@ -400,10 +455,13 @@ def LoadDataDir(path):
 def DoEverything(parent, params):
     if (not os.path.exists(params.dataPath)) and os.path.isdir(params.dataPath):
         if params.wantGUI:
-            mb.showerror('Fingerprint Recognization', 'Invalid data path. Select a valid path and try again!')
+            mb.showerror(
+                "Fingerprint Recognization",
+                "Invalid data path. Select a valid path and try again!",
+            )
             return
         else:
-            print('Invalid data path!\n')
+            print("Invalid data path!\n")
             sys.exit(-1)
 
     name_lst = LoadDataDir(params.dataPath)
@@ -418,19 +476,19 @@ def DoEverything(parent, params):
     flag, name = run_app(str(params.imgPath), str(params.dataPath))
 
     if flag:
-        m = 'Fingerprint matches: {}'.format(name)
+        m = "Fingerprint matches: {}".format(name)
         if params.wantGUI:
             ShowResult(m)
         else:
             print(m)
     elif not name == "None":
-        m = 'Fingerprint does not match. Most likely: {}'.format(name)
+        m = "Fingerprint does not match. Most likely: {}".format(name)
         if params.wantGUI:
             ShowResult(m)
         else:
             print(m)
     else:
-        m = 'Empty database.'
+        m = "Empty database."
         if params.wantGUI:
             ShowResult(m)
         else:

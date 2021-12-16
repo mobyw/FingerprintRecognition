@@ -88,7 +88,7 @@ def main():
     img1 = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
     if img1 is not None:
-        img1 = cv2.resize(img1, dsize=(256, 372))
+        img1 = cv2.resize(img1, dsize=(256, 364))
         kp1, des1 = get_descriptors(img1)
     else:
         raise Exception("Invalid image path!")
